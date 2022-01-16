@@ -1,6 +1,6 @@
 # Flight-Ticket-Booking-System
 Data Structure Final Group Project.
-Hope we can produce a understandable code :)
+Hope we can produce an understandable code :)
 
 > Submit the finalized/checked codes in the Script File
 
