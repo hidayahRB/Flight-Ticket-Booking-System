@@ -24,7 +24,7 @@ public class TestFile {
             String passport1 = s.nextLine();
             
             //fetch Node from Passenger here to access the data
-            
+            //add a method to compare whether the credentials are available in the list. (use contains())
         }
         else {//no acc yet, enter details
             System.out.println("Please complete the questions below:");
