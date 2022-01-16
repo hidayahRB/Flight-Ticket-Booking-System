@@ -4,6 +4,7 @@ public static void main(String[] args) {
         System.out.println("\nDo you have an account?");
         
         Scanner s = new Scanner(System.in);
+        Passenger p = new Passenger();
         
         String ans = s.nextLine();
         if (ans.equalsIgnoreCase("yes")) {  //already hv an acc, login
@@ -13,10 +14,10 @@ public static void main(String[] args) {
             System.out.println("Passport no.: ");
             String passport1 = s.nextLine();
             
-            //fetch Passenger object here to access the data
+            //fetch Node from Passenger here to access the data
             
         }
-        else {//no acc yet, enter details, if valid create new acc, else display error message
+        else {//no acc yet, enter details
             System.out.println("Please complete the questions below:");
             System.out.print("Name: ");
             String name = s.nextLine();
@@ -29,16 +30,41 @@ public static void main(String[] args) {
             System.out.print("Age: ");
             String age = s.nextLine();
             
-            //create a new Passenger object here with all the details above
+            //add a new Node to Passenger here with all the details above
            
         }
-        System.out.println("");
+        
+        System.out.println("Welcome back " + name );
         System.out.println("\nWhat do you want to do? Please enter your choice.");
         System.out.println("\n1. Search for flight");
         System.out.println("2. Book a ticket");
         System.out.println("3. Edit ticket information");
         System.out.println("4. View ticket status");
         System.out.println("5. Cancel a ticket");
+        System.out.println("6. Exit");
+        
+        int choice = s.nextInt();
+        
+        while (choice != 6) {
+            if (choice == 1) {
+            //call search fligth method here
+            }
+            else if (choice == 2) {
+            //call book ticket method here
+            }
+            else if (choice == 3) {
+            //call edit ticket information method here
+            }
+            else if (choice == 4) {
+            //call view ticket status method here
+            }
+            else if (choice == 5) {
+            //call cancel ticket method here
+            }
+        }
+        
+        System.out.println("\n***Thank yoou for using Flight Ticketing System!***");
+       
         
         
         
