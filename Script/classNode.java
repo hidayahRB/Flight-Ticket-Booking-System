@@ -70,7 +70,9 @@ public class Node<T> {
     
     @Override
     public String toString(){
-        return "Name: " + this.name + "\nPassport: " + this.passport;
+        return "Name: " + this.name + "\nPassport: " + this.passport +
+                "\nAge: " + this.age + "\nPhone: " + this.phone +
+                "\nAdress: " + this.address;
     }
     
 }
