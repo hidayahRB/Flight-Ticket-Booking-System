@@ -1,10 +1,19 @@
-public static void main(String[] args) {
+import java.util.Scanner;
+
+/**
+ *
+ * @author Afifah
+ * Updated by Hidayah
+ */
+public class TestFile {
+        
+    public static void main(String[] args) {
 
         System.out.println("***Welcome to Flight Ticketing System***");
         System.out.println("\nDo you have an account?");
         
         Scanner s = new Scanner(System.in);
-        Passenger p = new Passenger();
+        Passenger newPassenger = new Passenger();
         
         String ans = s.nextLine();
         if (ans.equalsIgnoreCase("yes")) {  //already hv an acc, login
@@ -23,18 +32,19 @@ public static void main(String[] args) {
             String name = s.nextLine();
             System.out.print("Passport no.: ");
             String passport = s.nextLine();
+            System.out.print("Age: ");
+            String age = s.nextLine();
             System.out.print("Phone no.: ");
             String phone = s.nextLine();
             System.out.print("Adress: ");
             String address = s.nextLine();
-            System.out.print("Age: ");
-            String age = s.nextLine();
             
             //add a new Node to Passenger here with all the details above
+            newPassenger.addLast(name, passport, age, phone, address);
            
         }
         
-        System.out.println("Welcome back " + name );
+        System.out.println("Welcome back " + newPassenger.getPassengerName());
         System.out.println("\nWhat do you want to do? Please enter your choice.");
         System.out.println("\n1. Search for flight");
         System.out.println("2. Book a ticket");
@@ -65,7 +75,6 @@ public static void main(String[] args) {
         
         System.out.println("\n***Thank yoou for using Flight Ticketing System!***");
        
-        
-        
-        
     }
+    
+}
