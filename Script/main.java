@@ -45,36 +45,39 @@ public class TestFile {
         }
         
         System.out.println("\nWelcome back " + newPassenger.getPassengerName());
-        System.out.println("\nWhat do you want to do? Please enter your choice between 1 - 6.");
-        System.out.println("\n1. Search for flight");
-        System.out.println("2. Book a ticket");
-        System.out.println("3. Edit ticket information");
-        System.out.println("4. View ticket status");
-        System.out.println("5. Cancel a ticket");
-        System.out.println("6. Exit");
         
-        int choice = s.nextInt();
+        boolean operating = true
+        while (operating) {  
+            
+            System.out.println("\nWhat do you want to do? Please enter your choice between 1 - 6.");
+            System.out.println("\n1. Search for flight");
+            System.out.println("2. Book a ticket");
+            System.out.println("3. Edit ticket information");
+            System.out.println("4. View ticket status");
+            System.out.println("5. Cancel a ticket");
+            System.out.println("6. Exit");
+            System.out.print("Your choice: ");
         
-        while (choice != 6) {   //after calling each method, ask for user input of choice again (choice = s.nextInt())
+            int choice = s.nextInt();
+            
             if (choice == 1) {
-            //call search fligth method here
-            choice = s.nextInt();
+                //call search fligth method here
             }
             else if (choice == 2) {
-            //call book ticket method here
-            choice = s.nextInt();
+                //call book ticket method here
             }
             else if (choice == 3) {
-            //call edit ticket information method here
-            choice = s.nextInt();
+                //call edit ticket information method here
             }
             else if (choice == 4) {
-            //call view ticket status method here
-            choice = s.nextInt();
+                //call view ticket status method here
             }
             else if (choice == 5) {
-            //call cancel ticket method here
-            choice = s.nextInt();
+                //call cancel ticket method here
+            }
+            else if (choice == 6) {
+                //exit the system when enter 6 
+                operating = false;
             }
         }
         
