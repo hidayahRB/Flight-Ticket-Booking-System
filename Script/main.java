@@ -10,7 +10,7 @@ public class TestFile {
     public static void main(String[] args) {
 
         System.out.println("***Welcome to Flight Ticketing System***");
-        System.out.println("\nDo you have an account?");
+        System.out.println("\nDo you have an account? Please enter 'yes' or 'no'.");
         
         Scanner s = new Scanner(System.in);
         Passenger newPassenger = new Passenger();
@@ -18,9 +18,9 @@ public class TestFile {
         String ans = s.nextLine();
         if (ans.equalsIgnoreCase("yes")) {  //already hv an acc, login
             System.out.println("Enter your credentials:");
-            System.out.println("Name: ");
+            System.out.print("Name: ");
             String name1 = s.nextLine();
-            System.out.println("Passport no.: ");
+            System.out.print("Passport no.: ");
             String passport1 = s.nextLine();
             
             //fetch Node from Passenger here to access the data
@@ -44,8 +44,8 @@ public class TestFile {
            
         }
         
-        System.out.println("Welcome back " + newPassenger.getPassengerName());
-        System.out.println("\nWhat do you want to do? Please enter your choice.");
+        System.out.println("\nWelcome back " + newPassenger.getPassengerName());
+        System.out.println("\nWhat do you want to do? Please enter your choice between 1 - 6.");
         System.out.println("\n1. Search for flight");
         System.out.println("2. Book a ticket");
         System.out.println("3. Edit ticket information");
@@ -55,21 +55,26 @@ public class TestFile {
         
         int choice = s.nextInt();
         
-        while (choice != 6) {
+        while (choice != 6) {   //after calling each method, ask for user input of choice again (choice = s.nextInt())
             if (choice == 1) {
             //call search fligth method here
+            choice = s.nextInt();
             }
             else if (choice == 2) {
             //call book ticket method here
+            choice = s.nextInt();
             }
             else if (choice == 3) {
             //call edit ticket information method here
+            choice = s.nextInt();
             }
             else if (choice == 4) {
             //call view ticket status method here
+            choice = s.nextInt();
             }
             else if (choice == 5) {
             //call cancel ticket method here
+            choice = s.nextInt();
             }
         }
         
