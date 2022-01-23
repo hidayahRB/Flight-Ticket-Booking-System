@@ -95,4 +95,75 @@ public class Passenger <T>{
         return result;
     }
     
+    // 3# Edit Information 
+    public void setNewName(T user, T newName){
+        Node<T> current = head;
+        // traverse the nodes
+        while(current != null){
+            if (current.getPassport().equals(user)) {
+                break;
+            }
+            current = current.getNextNode();
+        }
+        // now CURRENT is the same as USER
+        // we are setting a NEW NAME for this USER
+        current.setName(newName);
+    }
+    
+    public void setNewPassport(T user, T newPass){
+        Node<T> current = head;
+        // traverse the nodes
+        while(current != null){
+            if (current.getPassport().equals(user)) {
+                break;
+            }
+            current = current.getNextNode();
+        }
+        // now CURRENT is the same as USER
+        // we are setting a NEW NAME for this USER
+        current.setPassport(newPass);
+    }
+    
+    public void setNewAge(T user, T newAge){
+        Node<T> current = head;
+        // traverse the nodes
+        while(current != null){
+            if (current.getPassport().equals(user)) {
+                break;
+            }
+            current = current.getNextNode();
+        }
+        // now CURRENT is the same as USER
+        // we are setting a NEW NAME for this USER
+        current.setAge(newAge);
+    }
+    
+    public void setNewPhone(T user, T newPhone){
+        Node<T> current = head;
+        // traverse the nodes
+        while(current != null){
+            if (current.getPassport().equals(user)) {
+                break;
+            }
+            current = current.getNextNode();
+        }
+        // now CURRENT is the same as USER
+        // we are setting a NEW NAME for this USER
+        current.setPhone(newPhone);
+    }
+    
+    public void setNewAdd(T user, T newAdd){
+        Node<T> current = head;
+        // traverse the nodes
+        while(current != null){
+            if (current.getPassport().equals(user)) {
+                break;
+            }
+            current = current.getNextNode();
+        }
+        // now CURRENT is the same as USER
+        // we are setting a NEW NAME for this USER
+        current.setAddress(newAdd);
+    }
+    
 }
