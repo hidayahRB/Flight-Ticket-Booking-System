@@ -1,6 +1,4 @@
 
-package ds.assg.pkg2022;
-
 /**
  *
  * @author Afifah Abdul Halim
