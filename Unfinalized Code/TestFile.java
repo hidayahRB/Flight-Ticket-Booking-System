@@ -93,7 +93,7 @@ public class TestFile {
                 System.out.println("Which date would u like to fly? enter a date with format dd/mm/yyyy");
                 String date = s.next();
                 bookTicket(date);
-                System.out.println("Tadaa!!");
+                System.out.println("Testing...");
             }
             else if (choice == 3) {
                 //call edit ticket information method here
