@@ -1,4 +1,3 @@
-package flight.system;
 /**
  *
  * @author hanif
