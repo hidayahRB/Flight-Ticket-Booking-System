@@ -1,8 +1,6 @@
-package flight.system;
-
-/**
- *
- * @author hanif
+/*@author Afifah
+ * Updated by Hidayah
+ * Updated by Hanii
  */
 public class LinkedList<T> {
    Node head;
