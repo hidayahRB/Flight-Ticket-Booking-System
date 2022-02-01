@@ -1,3 +1,9 @@
+/**
+ *
+ * Idea by Hanii
+ * Updated by Hidayah
+ */
+
 public class NodeFlight<T> {
     T fName;
     T fDate;
