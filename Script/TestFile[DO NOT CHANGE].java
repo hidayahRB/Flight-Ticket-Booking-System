@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,7 +11,7 @@ import java.util.Date;
 import java.text.ParseException;
 /**
  *
- * @author Hidayah
+ * @author Lenovo
  */
 public class TestFile {
 
@@ -198,35 +199,41 @@ public class TestFile {
         System.out.println("4. Update phone number");
         System.out.println("5. Update home address");
         System.out.println("6. Save details");
-        
+        System.out.print("Activity of choice: ");
         int choice = s.nextInt();
         boolean ans = true;
         while(ans){
             
             if (choice == 1) {
                 System.out.print("New name: ");
-                String name = s.next();
-                name += s.nextLine();
-                newPassenger.setNewName(cUser.getPassport(), name);
+                String newData = s.next();
+                newData += s.nextLine();
+                replaceSelected(cUser, newData, 1);
+                newPassenger.setNewName(cUser.getPassport(), newData);
             }else
             if (choice == 2) {
                 System.out.print("New passport number: ");
                 String passport = s.next();
+                replaceSelected(cUser, passport, 2);
                 newPassenger.setNewPassport(cUser.getPassport(), passport);
             }else
             if (choice == 3) {
                 System.out.print("New age: ");
                 String age = s.next();
+                replaceSelected(cUser, age, 3);
                 newPassenger.setNewAge(cUser.getPassport(), age);
+                
             }else
             if (choice == 4) {
                 System.out.print("New phone number: ");
                 String phone = s.next();
+                replaceSelected(cUser, phone, 4);
                 newPassenger.setNewPhone(cUser.getPassport(), phone);
             }else
             if (choice == 5) {
                 System.out.print("New home address: ");
                 String add = s.nextLine();
+                replaceSelected(cUser, add, 5);
                 newPassenger.setNewAdd(cUser.getPassport(), add);
             }else{
                 //exit the system when enter 6 
@@ -242,6 +249,56 @@ public class TestFile {
         System.out.println("-----Updated Personal Information-----");
         System.out.println(cUser);
         System.out.println("--------------------------------------");
+    }
+
+    private static void replaceSelected(NodePassenger cUser, String newData, int par) {
+        try{
+            //Instantiating the File class
+            String filePath = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PassengerList.txt";
+            //Instantiating the Scanner class to read the file
+            Scanner sc = new Scanner(new File(filePath));
+            //instantiating the StringBuffer class
+            StringBuffer buffer = new StringBuffer();
+            //Reading lines of the file and appending them to StringBuffer
+            while (sc.hasNextLine()) {
+                buffer.append(sc.nextLine()+System.lineSeparator());
+            }
+            String fileContents = buffer.toString();
+            System.out.println("Contents of the file: "+fileContents);
+            //closing the Scanner object
+            sc.close();
+            String oldLine = null;
+            String newLine = null;
+            
+            if (par == 1) { // update name
+                oldLine = cUser.getName() + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+                newLine = newData + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+            }else if(par == 2){ // update passport
+                oldLine = cUser.getName() + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+                newLine = cUser.getName() + ";" + newData + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+            }else if (par == 3) { // update age
+                oldLine = cUser.getName() + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+                newLine = cUser.getName() + ";" + cUser.getPassport() + ";" + newData + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+            }else if (par == 4) { // update phone
+                oldLine = cUser.getName() + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+                newLine = cUser.getName() + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + newData + ";" + cUser.getAddress();
+            }else if (par == 5) { // update address
+                oldLine = cUser.getName() + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + cUser.getAddress();
+                newLine = cUser.getName() + ";" + cUser.getPassport() + ";" + cUser.getAge() + ";" + cUser.getPhone() + ";" + newData;
+            }
+            
+            //Replacing the old line with new line
+            fileContents = fileContents.replaceAll(oldLine, newLine);
+            //instantiating the FileWriter class
+            FileWriter writer = new FileWriter(filePath);
+            System.out.println("");
+            System.out.println("new data: "+fileContents);
+            writer.append(fileContents);
+            writer.flush();
+
+        }catch(IOException e){
+            System.out.println("Problem reading file.");
+        }
     }
 
 }
