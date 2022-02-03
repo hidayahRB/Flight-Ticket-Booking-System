@@ -17,6 +17,13 @@ public class TestFile {
     
     public static void main(String[] args) throws FileNotFoundException {
         
+        Flight flight = new Flight();
+        flight.addLast("Moscow", "2022/01/05");
+        flight.addLast("London", "2022/01/06");
+        flight.addLast("Paris", "2022/01/08");
+        flight.addLast("Berlin", "2022/01/09");
+        flight.addLast("NewYork", "2022/01/21");
+        
         System.out.println("***Welcome to Flight Ticketing System***");
         System.out.println("\nDo you have an account? Please enter 'yes' or 'no'.");
         
@@ -93,7 +100,7 @@ public class TestFile {
                 System.out.println("Which date would u like to fly? enter a date with format dd/mm/yyyy");
                 String date = s.next();
                 bookTicket(date);
-                System.out.println("Testing...");
+                System.out.println("Testing..");
             }
             else if (choice == 3) {
                 //call edit ticket information method here
@@ -173,41 +180,49 @@ public class TestFile {
     }
     
     public static void bookTicket(String date) throws FileNotFoundException {
-        
-        File flightFile = new File("C:\\Users\\Afifah Abdul Halim\\OneDrive - Universiti Malaya\\Documents\\NetBeansProjects\\DS assg 2022\\src\\ds\\assg\\pkg2022\\FlightFile.txt");  //put location of Flight txt file here
-        Scanner s1 = new Scanner(flightFile);
-        s1.nextLine();
+
         String flightText = "";
-        while(s1.hasNextLine()) {
-            flightText += s1.nextLine(); //read every line in txt file and append it in a String
-        }
-        
-        int n = 0;
-        
-        for (int i = 0; i < flightText.length(); i++) {     //traverse the Flight txt file,
-            String[] newtext = flightText.split(",");   
-            
-            for (int j = 2; j < newtext.length; j++) {      //get the date at index j in Flight txt file)
-                
+        try {
+            File myObj = new File("C:\\\\Users\\\\Afifah Abdul Halim\\\\OneDrive - Universiti Malaya\\\\Documents\\\\NetBeansProjects\\\\DS assg 2022\\\\src\\\\ds\\\\assg\\\\pkg2022\\\\FlightFile.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                flightText = myReader.nextLine();
+                String[] newtext = flightText.split(",");
+                for (int j = 1; j < newtext.length; j++) {      //get the date at index j in Flight txt file)
                 if (newtext[j].equals(date)) {
                     //j+1 is to get the status of flight
-                    if (newtext[j+1].equals(false)) {         //flight chosen is available, flight status = false
-                        n += 1;
-                        String[] temp = new String[n];
-                        System.arraycopy(confirmedList, 0, temp, 0, n); //copy array to increase the size of confirmedList
+                    if (newtext[j+1].equals("false")) {         //flight chosen is available, flight status = false
+                        String[] temp = new String[confirmedList.length+1];
+                        for (int i = 0; i < confirmedList.length; i++) {
+                            temp[i] = confirmedList[i];
+                        }
                         confirmedList = temp;
-                        confirmedList[n] = user;
+                        confirmedList[temp.length - 1] = user;
                         System.out.println("You have successfully book the ticket!");
+                        //break;
                     }
                     else {                                  //flight chosen is not available, had been booked, flight status = true
-                        waitingList.enqueue(user);
+                        waitingList.enqueue(user);          
                         System.out.println("Sorry your chosen flight is not available. You are now in the waiting list.");
                     }
                 }
+                else {
+                    System.out.println("Date not exist");
+                }
+                }
                 
             }
+            myReader.close(); 
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
         }
         
     }
+    
+    public static void bookTicket2(String date) {
+        
+    }
+    
     
 }
