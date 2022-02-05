@@ -22,6 +22,11 @@ public class TestFile {
     static String[] PARconfirmedList = new String[15];
     static String[] BEconfirmedList = new String[15];
     
+    static Queue NYCwaitingList = new Queue(100);   
+    static Queue LDNwaitingList = new Queue(100);   
+    static Queue PARwaitingList = new Queue(100);   
+    static Queue BEwaitingList = new Queue(100);   
+    
     public static void main(String[] args) throws FileNotFoundException, ParseException, IOException {
         
         Scanner s = new Scanner(System.in);
@@ -233,7 +238,8 @@ public class TestFile {
             int count = ReadLine(file);
             
             if (count >= NYCconfirmedList.length) {
-                System.out.println("The flight is full, you will be in the waiting list...");
+                NYCwaitingList.enqueue(cUser);          
+                System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "NYC,2022/01/05";
                 count++;
@@ -244,7 +250,8 @@ public class TestFile {
             int count = ReadLine(file);
             
             if (count >= LDNconfirmedList.length) {
-                System.out.println("The flight is full, you will be in the waiting list...");
+                LDNwaitingList.enqueue(cUser);          
+                System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "LDN,2022/01/12";
                 count++;
@@ -255,7 +262,8 @@ public class TestFile {
             int count = ReadLine(file);
             
             if (count >= PARconfirmedList.length) {
-                System.out.println("The flight is full, you will be in the waiting list...");
+                PARwaitingList.enqueue(cUser);          
+                System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "PAR,2022/01/19";
                 count++;
@@ -266,7 +274,8 @@ public class TestFile {
             int count = ReadLine(file);
             
             if (count >= BEconfirmedList.length) {
-                System.out.println("The flight is full, you will be in the waiting list...");
+                BEwaitingList.enqueue(cUser);          
+                System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "PAR,2022/01/19";
                 count++;
