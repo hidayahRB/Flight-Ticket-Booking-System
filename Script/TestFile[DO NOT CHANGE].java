@@ -3,8 +3,10 @@ import java.io.File;
 import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,8 +16,13 @@ import java.text.ParseException;
  * @author Lenovo
  */
 public class TestFile {
-
-    public static void main(String[] args) throws FileNotFoundException, ParseException {
+               
+    static String[] NYCconfirmedList = new String[15];  // We set the max capacity of this flight is 15 passengers
+    static String[] LDNconfirmedList = new String[15];
+    static String[] PARconfirmedList = new String[15];
+    static String[] BEconfirmedList = new String[15];
+    
+    public static void main(String[] args) throws FileNotFoundException, ParseException, IOException {
         
         Scanner s = new Scanner(System.in);
         // CREATE PASSENGER OBJECT
@@ -26,11 +33,10 @@ public class TestFile {
         
         // LOAD DATA OF FLIGHT DESTINATION
         Flight flight = new Flight();
-        flight.addLast("Moscow", "2022/01/05");
-        flight.addLast("London", "2022/01/06");
-        flight.addLast("Paris", "2022/01/08");
-        flight.addLast("Berlin", "2022/01/09");
-        flight.addLast("NewYork", "2022/01/21");
+        flight.addLast("New York", "2022/01/05");
+        flight.addLast("London", "2022/01/12");
+        flight.addLast("Paris", "2022/01/19");
+        flight.addLast("Berlin", "2022/01/26");
         
         // START OUR FLIGHT BOOKING SYSTEM
         System.out.println("***Welcome to Flight Ticketing System***");
@@ -38,6 +44,16 @@ public class TestFile {
         String userName = null;
         String userPass = null;
         String ans = s.nextLine();
+        
+        // LOAD DATA OF CONFIRMED PASSENGER LIST INTO THE ARRAY (IF ANY)
+        String nycFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\NYCconfirmedList.txt";
+        loadConfirmedList(nycFile, NYCconfirmedList);
+        String ldnFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\LDNconfirmedList.txt";
+        loadConfirmedList(nycFile, LDNconfirmedList);
+        String parFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PARconfirmedList.txt";
+        loadConfirmedList(nycFile, PARconfirmedList);
+        String beFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\BEconfirmedList.txt";
+        loadConfirmedList(nycFile, BEconfirmedList);
         
         // IF USER HAS AN ACCOUNT
         if (ans.equalsIgnoreCase("yes")) {  //already hv an acc, login
@@ -56,6 +72,7 @@ public class TestFile {
             }
             else {
                 System.out.println("User not found.");
+                return;
             }
             
         }    
@@ -89,12 +106,11 @@ public class TestFile {
         while (operating) {   
             
             System.out.println("\nWhat do you want to do? Please enter your choice");
-            System.out.println("\n1. Search for flight");
-            System.out.println("2. Book a ticket");
-            System.out.println("3. Edit ticket information");
-            System.out.println("4. View ticket status");
-            System.out.println("5. Cancel a ticket");
-            System.out.println("6. Exit");
+            System.out.println("\n1. Search and book for a flight");
+            System.out.println("2. Edit ticket information");
+            System.out.println("3. View ticket status");
+            System.out.println("4. Cancel a ticket");
+            System.out.println("5. Exit");
             System.out.print("Your choice: ");
             
             int choice = s.nextInt();
@@ -102,21 +118,27 @@ public class TestFile {
             if (choice == 1) {
                 //call search fligth method here
                 searchFlight(flight);
+                System.out.println("Would you like to proceed with booking a flight? [YES / NO]");
+                String ans2 = s.next();
+                if (ans2.equalsIgnoreCase("YES")) {
+                    System.out.println("\nWhich date would u like to fly? enter a date with format [yyyy/mm/dd]");
+                    String date = s.next();
+                    // call book method here
+                    bookTicket(date, currentUser);
+                }
+
             }
             else if (choice == 2) {
-                //call book ticket method here
-            }
-            else if (choice == 3) {
                 //call edit ticket information method here
                 updateDetails(newPassenger, currentUser);
             }
-            else if (choice == 4) {
+            else if (choice == 3) {
                 //call view ticket status method here
             }
-            else if (choice == 5) {
+            else if (choice == 4) {
                 //call cancel ticket method here
             }
-            else if (choice == 6) {
+            else{
                 //exit the system here
                 operating = false;
             }
@@ -145,13 +167,29 @@ public class TestFile {
         try (FileWriter f = new FileWriter("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PassengerList.txt", true); 
                 BufferedWriter b = new BufferedWriter(f); 
                 PrintWriter p = new PrintWriter(b);) { 
-            p.println(name + ";" + passport + ";" + age + ";" + phone + ";" + address); 
+                p.println(name + ";" + passport + ";" + age + ";" + phone + ";" + address); 
         } catch (IOException i) { 
             i.printStackTrace(); 
         }
         
         //add a new Node to Passenger here with all the details above
         newPassenger.addLast(name, passport, age, phone, address);
+    }
+    
+    private static void loadConfirmedList(String file, String[] confirmedList) {
+        // read the file
+        try{
+            Scanner in = new Scanner(new FileInputStream(file));
+            int count = 0;
+            while(in.hasNextLine()){
+                // add passenger into list
+                String str = in.nextLine();     // read a line
+                confirmedList[count] = str;     // store data into array
+                count++;
+            }in.close();
+        }catch(FileNotFoundException e){
+            System.out.println("File not found");
+        }
     }
     
     private static void searchFlight(Flight flight) throws ParseException {
@@ -186,6 +224,83 @@ public class TestFile {
             currNode = currNode.nextNode; 
         }
         Flight.printList(resultlist);  //print the search flight result 
+        
+    }
+    
+    private static void bookTicket(String date, NodePassenger cUser) throws IOException{
+        if (date.equals("2022/01/05")) {
+            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\NYCconfirmedList.txt");
+            int count = ReadLine(file);
+            
+            if (count >= NYCconfirmedList.length) {
+                System.out.println("The flight is full, you will be in the waiting list...");
+            }else{
+                String details = "NYC,2022/01/05";
+                count++;
+                updateConfirmedList(file, details, cUser, NYCconfirmedList, count);
+            } 
+        }else if(date.equals("2022/01/12")) {
+            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\LDNconfirmedList.txt");
+            int count = ReadLine(file);
+            
+            if (count >= LDNconfirmedList.length) {
+                System.out.println("The flight is full, you will be in the waiting list...");
+            }else{
+                String details = "LDN,2022/01/12";
+                count++;
+                updateConfirmedList(file, details, cUser, LDNconfirmedList, count);
+            }
+        }else if(date.equals("2022/01/19")){
+            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PARconfirmedList.txt");
+            int count = ReadLine(file);
+            
+            if (count >= PARconfirmedList.length) {
+                System.out.println("The flight is full, you will be in the waiting list...");
+            }else{
+                String details = "PAR,2022/01/19";
+                count++;
+                updateConfirmedList(file, details, cUser, PARconfirmedList, count);
+            }
+        }else if (date.equals("2022/01/26")) {
+            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\BEconfirmedList.txt");
+            int count = ReadLine(file);
+            
+            if (count >= BEconfirmedList.length) {
+                System.out.println("The flight is full, you will be in the waiting list...");
+            }else{
+                String details = "PAR,2022/01/19";
+                count++;
+                updateConfirmedList(file, details, cUser, BEconfirmedList, count);
+            }
+        }else{
+            System.out.println("No flight available on that date...");
+        }
+    }
+    
+    private static void updateConfirmedList(File file, String details, NodePassenger cUser, String[] confirmedList, int count) {
+        try (FileWriter f = new FileWriter(file, true); 
+                BufferedWriter b = new BufferedWriter(f); 
+                PrintWriter p = new PrintWriter(b);) 
+        { 
+            String str = count + ";" + details + ";" + cUser.getName() + ";" + cUser.getPassport();
+            p.println(str); 
+            confirmedList[count-1] = str;
+        } catch (IOException i) { 
+            i.printStackTrace(); 
+        }
+        System.out.println("You have successfully book a ticket!");
+    }
+    
+    public static int ReadLine(File file) {
+        int lines = 0;
+        try (LineNumberReader lnr = new LineNumberReader(new FileReader(file))) {
+            while (lnr.readLine() != null);
+            lines = lnr.getLineNumber();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
     }
     
     private static void updateDetails(Passenger newPassenger, NodePassenger cUser) {
@@ -264,7 +379,7 @@ public class TestFile {
                 buffer.append(sc.nextLine()+System.lineSeparator());
             }
             String fileContents = buffer.toString();
-            System.out.println("Contents of the file: "+fileContents);
+            //System.out.println("Contents of the file: "+fileContents);
             //closing the Scanner object
             sc.close();
             String oldLine = null;
@@ -292,7 +407,7 @@ public class TestFile {
             //instantiating the FileWriter class
             FileWriter writer = new FileWriter(filePath);
             System.out.println("");
-            System.out.println("new data: "+fileContents);
+            //System.out.println("new data: "+fileContents);
             writer.append(fileContents);
             writer.flush();
 
