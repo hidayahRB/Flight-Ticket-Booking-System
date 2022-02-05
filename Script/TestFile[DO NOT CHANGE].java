@@ -224,19 +224,6 @@ public class TestFile {
         }
     }
     
-    private static void updateWaitingList(File file, NodePassenger cUser, Queue wList) {
-        try (FileWriter f = new FileWriter(file, true); 
-                BufferedWriter b = new BufferedWriter(f); 
-                PrintWriter p = new PrintWriter(b);) 
-        { 
-            String str = cUser.getName() + ";" + cUser.getPassport();
-            p.println(str); 
-            wList.enqueue(str);
-        } catch (IOException i) { 
-            i.printStackTrace(); 
-        }
-        
-    }
     
     private static void searchFlight(Flight flight) throws ParseException {
         Scanner input = new Scanner(System.in);
@@ -278,7 +265,8 @@ public class TestFile {
             File file = new File(nycFile);
             int count = ReadLine(file);
             if (count >= NYCconfirmedList.length) {
-                updateWaitingList(file, cUser, NYCwaitingList);
+                File wfile = new File(nycWaitingFile);
+                updateWaitingList(wfile, cUser, NYCwaitingList);
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "NYC,2022/01/05";
@@ -289,7 +277,8 @@ public class TestFile {
             File file = new File(ldnFile);
             int count = ReadLine(file);
             if (count >= LDNconfirmedList.length) {
-                updateWaitingList(file, cUser, LDNwaitingList);        
+                File wfile = new File(ldnWaitingFile);
+                updateWaitingList(wfile, cUser, LDNwaitingList);        
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "LDN,2022/01/12";
@@ -301,7 +290,8 @@ public class TestFile {
             int count = ReadLine(file);
             
             if (count >= PARconfirmedList.length) {
-                updateWaitingList(file, cUser, PARwaitingList);        
+                File wfile = new File(parWaitingFile);
+                updateWaitingList(wfile, cUser, PARwaitingList);        
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "PAR,2022/01/19";
@@ -313,7 +303,8 @@ public class TestFile {
             int count = ReadLine(file);
             
             if (count >= BEconfirmedList.length) {
-                updateWaitingList(file, cUser, BEwaitingList);        
+                File wfile = new File(beWaitingFile);
+                updateWaitingList(wfile, cUser, BEwaitingList);        
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "PAR,2022/01/19";
@@ -349,6 +340,20 @@ public class TestFile {
             e.printStackTrace();
         }
         return lines;
+    }
+    
+    private static void updateWaitingList(File file, NodePassenger cUser, Queue wList) {
+        try (FileWriter f = new FileWriter(file, true); 
+                BufferedWriter b = new BufferedWriter(f); 
+                PrintWriter p = new PrintWriter(b);) 
+        { 
+            String str = cUser.getName() + ";" + cUser.getPassport();
+            p.println(str); 
+            wList.enqueue(str);
+        } catch (IOException i) { 
+            i.printStackTrace(); 
+        }
+        
     }
     
     private static void updateDetails(Passenger newPassenger, NodePassenger cUser) {
