@@ -29,7 +29,7 @@ public class Queue<T> {
             tail++;
             data[tail] = input;
             head++;
-            System.out.println("Enqueue " + "[" +tail + "]" + input + " done..");
+            //System.out.println("Enqueue " + "[" +tail + "]" + input + " done..");
         }
         else {
             if (isFull()) { //queue is full 
@@ -38,7 +38,7 @@ public class Queue<T> {
             else { //not full and not empty
                 tail++;
                 data[tail] = input;
-                System.out.println("Enqueue " + "[" +tail + "]" + input + " done..");
+                //System.out.println("Enqueue " + "[" +tail + "]" + input + " done..");
             }
         }
     }
