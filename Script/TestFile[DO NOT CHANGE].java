@@ -27,6 +27,16 @@ public class TestFile {
     static Queue PARwaitingList = new Queue(100);   
     static Queue BEwaitingList = new Queue(100);   
     
+    static String nycFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\NYCconfirmedList.txt";
+    static String ldnFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\LDNconfirmedList.txt";
+    static String parFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PARconfirmedList.txt";
+    static String beFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\BEconfirmedList.txt";
+    
+    static String nycWaitingFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\NYCwaitingList.txt";
+    static String ldnWaitingFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\LDNwaitingList.txt";
+    static String parWaitingFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PARwaitingList.txt";
+    static String beWaitingFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\BEwaitingList.txt";
+    
     public static void main(String[] args) throws FileNotFoundException, ParseException, IOException {
         
         Scanner s = new Scanner(System.in);
@@ -51,14 +61,16 @@ public class TestFile {
         String ans = s.nextLine();
         
         // LOAD DATA OF CONFIRMED PASSENGER LIST INTO THE ARRAY (IF ANY)
-        String nycFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\NYCconfirmedList.txt";
         loadConfirmedList(nycFile, NYCconfirmedList);
-        String ldnFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\LDNconfirmedList.txt";
-        loadConfirmedList(nycFile, LDNconfirmedList);
-        String parFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PARconfirmedList.txt";
-        loadConfirmedList(nycFile, PARconfirmedList);
-        String beFile = "C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\BEconfirmedList.txt";
-        loadConfirmedList(nycFile, BEconfirmedList);
+        loadConfirmedList(ldnFile, LDNconfirmedList);
+        loadConfirmedList(parFile, PARconfirmedList);
+        loadConfirmedList(beFile, BEconfirmedList);
+        
+        // LOAD DATA OF PASSENGERS WHO ARE IN THE WAITING LIST
+        loadWaitingList(nycWaitingFile,NYCwaitingList);
+        loadWaitingList(ldnWaitingFile,LDNwaitingList);
+        loadWaitingList(parWaitingFile,PARwaitingList);
+        loadWaitingList(beWaitingFile,BEwaitingList);
         
         // IF USER HAS AN ACCOUNT
         if (ans.equalsIgnoreCase("yes")) {  //already hv an acc, login
@@ -197,6 +209,35 @@ public class TestFile {
         }
     }
     
+    private static void loadWaitingList(String file, Queue waitingList) {
+        // read the file
+        try{
+            Scanner in = new Scanner(new FileInputStream(file));
+            
+            while(in.hasNextLine()){
+                // add passenger into queue
+                String str = in.nextLine();     // read a line
+                waitingList.enqueue(str);
+            }in.close();
+        }catch(FileNotFoundException e){
+            System.out.println("File not found");
+        }
+    }
+    
+    private static void updateWaitingList(File file, NodePassenger cUser, Queue wList) {
+        try (FileWriter f = new FileWriter(file, true); 
+                BufferedWriter b = new BufferedWriter(f); 
+                PrintWriter p = new PrintWriter(b);) 
+        { 
+            String str = cUser.getName() + ";" + cUser.getPassport();
+            p.println(str); 
+            wList.enqueue(str);
+        } catch (IOException i) { 
+            i.printStackTrace(); 
+        }
+        
+    }
+    
     private static void searchFlight(Flight flight) throws ParseException {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter any week of choice.");
@@ -234,11 +275,10 @@ public class TestFile {
     
     private static void bookTicket(String date, NodePassenger cUser) throws IOException{
         if (date.equals("2022/01/05")) {
-            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\NYCconfirmedList.txt");
+            File file = new File(nycFile);
             int count = ReadLine(file);
-            
             if (count >= NYCconfirmedList.length) {
-                NYCwaitingList.enqueue(cUser);          
+                updateWaitingList(file, cUser, NYCwaitingList);
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "NYC,2022/01/05";
@@ -246,11 +286,10 @@ public class TestFile {
                 updateConfirmedList(file, details, cUser, NYCconfirmedList, count);
             } 
         }else if(date.equals("2022/01/12")) {
-            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\LDNconfirmedList.txt");
+            File file = new File(ldnFile);
             int count = ReadLine(file);
-            
             if (count >= LDNconfirmedList.length) {
-                LDNwaitingList.enqueue(cUser);          
+                updateWaitingList(file, cUser, LDNwaitingList);        
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "LDN,2022/01/12";
@@ -258,11 +297,11 @@ public class TestFile {
                 updateConfirmedList(file, details, cUser, LDNconfirmedList, count);
             }
         }else if(date.equals("2022/01/19")){
-            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\PARconfirmedList.txt");
+            File file = new File(parFile);
             int count = ReadLine(file);
             
             if (count >= PARconfirmedList.length) {
-                PARwaitingList.enqueue(cUser);          
+                updateWaitingList(file, cUser, PARwaitingList);        
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "PAR,2022/01/19";
@@ -270,11 +309,11 @@ public class TestFile {
                 updateConfirmedList(file, details, cUser, PARconfirmedList, count);
             }
         }else if (date.equals("2022/01/26")) {
-            File file = new File("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\FlightBokingSystem\\src\\flightbokingsystem\\BEconfirmedList.txt");
+            File file = new File(beFile);
             int count = ReadLine(file);
             
             if (count >= BEconfirmedList.length) {
-                BEwaitingList.enqueue(cUser);          
+                updateWaitingList(file, cUser, BEwaitingList);        
                 System.out.println("Sorry your chosen flight is fully booked. You are now in the waiting list.");
             }else{
                 String details = "PAR,2022/01/19";
