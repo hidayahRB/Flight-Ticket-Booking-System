@@ -1,2 +1,0 @@
-AA Airlines,1/1/2022,false
-BB Airlines,1/2/2022,true
